@@ -17,10 +17,11 @@ jobs:
         echo "commit_hash=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
     - id: pr_id
       uses: actions/github-script@v6
-      debug: true
-      script: |
-        const commit_hash = "${{ steps.commit_id.outputs.commit_hash }}"
-        const { data: { items } } = await github.rest.search.issuesAndPullRequests({
-          q: `${commit_hash} type:pr is:merged`
-        }};
-        console.log(items)
+      with:
+        debug: true
+        script: |
+          const commit_hash = "${{ steps.commit_id.outputs.commit_hash }}"
+          const { data: { items } } = await github.rest.search.issuesAndPullRequests({
+            q: `${commit_hash} type:pr is:merged`
+          }};
+          console.log(items)
