@@ -15,7 +15,7 @@ jobs:
     - id: commit_id
       shell: bash
       run: |
-        echo "commit_hash=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        echo "commit_hash=$(git rev-parse HEAD)" | tee $GITHUB_OUTPUT
     - id: pr_id
       uses: actions/github-script@v6
       with:
@@ -24,5 +24,5 @@ jobs:
           const commit_hash = "${{ steps.commit_id.outputs.commit_hash }}"
           const { data: { items } } = await github.rest.search.issuesAndPullRequests({
             q: `${commit_hash} type:pr is:merged`
-          }};
+          });
           console.log(items)
