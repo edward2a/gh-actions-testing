@@ -22,6 +22,7 @@ jobs:
       shell: bash
       run: |
         git branch -a
+        git log -p
         if $(git merge-base --is-ancestor remotes/origin/master HEAD); then
           echo "Branch ${GITHUB_REF#refs/} verified to have linear history with master."
         else
