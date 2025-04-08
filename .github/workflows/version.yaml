@@ -24,13 +24,13 @@ jobs:
 
           // Get latest tag
           let v_string = execSync(
-            'git tag --list | grep -P "\d+\.\d+\.\d+" | sort --sort=version | tail -n 1',
+            'git tag --list | grep -E "[0-9]+\.[0-9]+\.[0-9]+" | sort --sort=version | tail -n 1',
             { encoding: 'utf-8' }
           );
 
           // Check result and log
           if (v_string == '') {
-            console.error('ERROR: Tag string not found while listing repository tags');
+            console.error(`ERROR: Tag string not found while listing repository tags - ${v_string}`);
             process.exit(1);
           } else {
             console.log(`INFO: Found tag with version ${v_string}`);
