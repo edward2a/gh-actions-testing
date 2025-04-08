@@ -32,6 +32,7 @@ jobs:
               patch: Number(v[2])
             }
           })();
+          console.log(`Found tag with version ${v_string}`);
 
           // Increase relevant version
           switch ( (context.payload.pull_request.title.match(/\[(MAJOR|MINOR|PATCH)\]/) || ['',''])[1] ) {
