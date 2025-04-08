@@ -30,8 +30,16 @@ jobs:
 
           // Check result and log
           if (v_string == '') {
+
+            // If no version tag and init set (done here to prevent re-init) set first tag
+            if (context.payload.pull_request.title.match(/\[INIT\]/)) {
+              console.log('INFO: No version tag found and init set, initializing version as "0.0.1"');
+              return '0.0.1';
+            }
+
             console.error(`ERROR: Tag string not found while listing repository tags - ${v_string}`);
             process.exit(1);
+
           } else {
             console.log(`INFO: Found tag with version ${v_string}`);
           }
@@ -42,7 +50,7 @@ jobs:
               major: Number(v[0]),
               minor: Number(v[1]),
               patch: Number(v[2])
-            }
+            };
           })();
 
           // Increase relevant version based on PR title tag
