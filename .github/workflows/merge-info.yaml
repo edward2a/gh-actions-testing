@@ -1,3 +1,4 @@
+name: Merge Info
 on:
 
   push:
