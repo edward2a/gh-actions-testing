@@ -14,14 +14,14 @@ jobs:
     steps:
 
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - id: check_ancestry
       name: Check branch ancestry
       shell: bash
       run: |
-        set -x
-        git fetch origin master
-        git branch -l
+        git branch -a
         if $(git merge-base --is-ancestor origin/master ${GITHUB_REF#refs/}); then
           echo "Branch ${GITHUB_REF#refs/} verified to have linear history with master."
         else
