@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      #with:
-      #  fetch-depth: 0
+      with:
+        fetch-depth: 0
     - id: make_version
       uses: actions/github-script@v6
       with:
@@ -30,10 +30,10 @@ jobs:
 
           // Check result and log
           if (v_string == '') {
-            console.error('Tag string not found while listing repository tags');
+            console.error('ERROR: Tag string not found while listing repository tags');
             process.exit(1);
           } else {
-            console.log(`Found tag with version ${v_string}`);
+            console.log(`INFO: Found tag with version ${v_string}`);
           }
 
           // Parse tag into object
@@ -61,13 +61,20 @@ jobs:
               break;
 
             default:
-              console.error('Missing version change tag in PR title ([MAJOR]|[MINOR]|[PATCH])');
+              console.error('ERROR: Missing version change tag in PR title ([MAJOR]|[MINOR]|[PATCH])');
               process.exit(1);
           }
 
           let new_v_string = `${v_object.major}.${v_object.minor}.${v_object.patch}`;
-          console.log(`Last version: ${v_string}`);
-          console.log(`Next version: ${new_v_string}`);
+          console.log(`INFO: Last version: ${v_string}`);
+          console.log(`INFO: Next version: ${new_v_string}`);
 
           return new_v_string;
+
+		- id: use_output
+			env:
+				VERSION_TAG: ${{ stesp.make_version.outputs.result }}
+			shell: bash
+			run: |
+				echo "INFO: Version tag processed is ${VERSION_TAG}"
 
