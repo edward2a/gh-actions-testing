@@ -37,18 +37,22 @@ jobs:
           switch ( (context.payload.pull_request.title.match(/\[(MAJOR|MINOR|PATCH)\]/) || ['',''])[1] ) {
 
             case 'MAJOR':
-              v_object['major'] += 1;
+              v_object.major += 1;
               break;
 
             case 'MINOR':
-              v_object['minor'] += 1;
+              v_object.minor += 1;
               break;
 
             case 'PATCH':
-              v_object['patch'] += 1;
+              v_object.patch += 1;
               break;
 
             default:
               console.error('Missing version change tag in PR title');
               process.exit(1);
           }
+
+          console.log(`Last version: ${v_string}`);
+          console.log(`Next version: ${v_object.major}.${v_object.minor}.${v_object.patch}`;
+
