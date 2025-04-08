@@ -21,6 +21,7 @@ jobs:
       name: Check branch ancestry
       shell: bash
       run: |
+        git fetch origin master
         git branch -a
         if $(git merge-base --is-ancestor remotes/origin/HEAD HEAD); then
           echo "Branch ${GITHUB_REF#refs/} verified to have linear history with master."
