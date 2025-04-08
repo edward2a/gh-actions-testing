@@ -18,10 +18,10 @@ jobs:
       with:
         debug: true
         script: |
-          import { execSync } from 'child_process';
+          require('child_process');
 
           // Get latest tag and parse into object
-          let v_string = execSync(
+          let v_string = child_process.execSync(
             'git tag --list | sort --sort=version | tail -n 1',
             { encoding: 'utf-8' }
           );
