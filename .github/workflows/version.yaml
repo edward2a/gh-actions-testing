@@ -71,10 +71,10 @@ jobs:
 
           return new_v_string;
 
-		- id: use_output
-			env:
-				VERSION_TAG: ${{ stesp.make_version.outputs.result }}
-			shell: bash
-			run: |
-				echo "INFO: Version tag processed is ${VERSION_TAG}"
+    - id: use_output
+      env:
+        VERSION_TAG: ${{ stesp.make_version.outputs.result }}
+      shell: bash
+      run: |
+        echo "INFO: Version tag processed is ${VERSION_TAG}"
 
