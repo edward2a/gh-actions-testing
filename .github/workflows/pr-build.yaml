@@ -24,3 +24,12 @@ jobs:
           echo "History for branch ${GITHUB_REF#refs/heads/} is not linear with master, please rebase or merge from master and try again."
           exit 1
         fi
+
+    - id: pr_event_info
+      name: PR event info test
+      shell: bash
+      run: |
+        cat << EOF
+        ${{ github.event }}
+        EOF
+
