@@ -54,5 +54,5 @@ jobs:
           }
 
           console.log(`Last version: ${v_string}`);
-          console.log(`Next version: ${v_object.major}.${v_object.minor}.${v_object.patch}`;
+          console.log(`Next version: ${v_object.major}.${v_object.minor}.${v_object.patch}`);
 
