@@ -13,30 +13,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      #with:
+      #  fetch-depth: 0
     - id: make_version
       uses: actions/github-script@v6
       with:
-        debug: true
+        result-encoding: string
         script: |
           const { execSync } = require('child_process');
 
-          // Get latest tag and parse into object
+          // Get latest tag
           let v_string = execSync(
-            'git tag --list | sort --sort=version | tail -n 1',
+            'git tag --list | grep -P "\d+\.\d+\.\d+" | sort --sort=version | tail -n 1',
             { encoding: 'utf-8' }
           );
-          let v_object = ((v = v_string.split(".")) => {
+
+          // Check result and log
+          if (v_string == '') {
+            console.error('Tag string not found while listing repository tags');
+            process.exit(1);
+          } else {
+            console.log(`Found tag with version ${v_string}`);
+          }
+
+          // Parse tag into object
+          let v_object = ((v = v_string.split('.')) => {
             return {
               major: Number(v[0]),
               minor: Number(v[1]),
               patch: Number(v[2])
             }
           })();
-          console.log(`Found tag with version ${v_string}`);
 
-          // Increase relevant version
+          // Increase relevant version based on PR title tag
           switch ( (context.payload.pull_request.title.match(/\[(MAJOR|MINOR|PATCH)\]/) || ['',''])[1] ) {
 
             case 'MAJOR':
@@ -52,10 +61,13 @@ jobs:
               break;
 
             default:
-              console.error('Missing version change tag in PR title');
+              console.error('Missing version change tag in PR title ([MAJOR]|[MINOR]|[PATCH])');
               process.exit(1);
           }
 
+          let new_v_string = `${v_object.major}.${v_object.minor}.${v_object.patch}`;
           console.log(`Last version: ${v_string}`);
-          console.log(`Next version: ${v_object.major}.${v_object.minor}.${v_object.patch}`);
+          console.log(`Next version: ${new_v_string}`);
+
+          return new_v_string;
 
