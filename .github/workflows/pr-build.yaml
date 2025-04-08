@@ -21,10 +21,10 @@ jobs:
       run: |
         git fetch origin master
         git branch -l
-        if $(git merge-base --is-ancestor origin/master ${GITHUB_REF#refs/pull/}); then
-          echo "Branch ${GITHUB_REF#refs/pull/} verified to have linear history with master."
+        if $(git merge-base --is-ancestor origin/master ${GITHUB_REF#refs/}); then
+          echo "Branch ${GITHUB_REF#refs/} verified to have linear history with master."
         else
-          echo "History for branch ${GITHUB_REF#refs/pull/} is not linear with master, please rebase or merge from master and try again."
+          echo "History for branch ${GITHUB_REF#refs/} is not linear with master, please rebase or merge from master and try again."
           exit 1
         fi
 
