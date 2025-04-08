@@ -34,7 +34,7 @@ jobs:
           })();
 
           // Increase relevant version
-          switch ( (github.event.pull_request.title.match(/\[(MAJOR|MINOR|PATCH)\]/) || ['',''])[1] ) {
+          switch ( (context.event.pull_request.title.match(/\[(MAJOR|MINOR|PATCH)\]/) || ['',''])[1] ) {
 
             case 'MAJOR':
               v_object['major'] += 1;
