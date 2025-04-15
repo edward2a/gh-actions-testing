@@ -25,4 +25,4 @@ jobs:
           const { data: { items } } = await github.rest.search.issuesAndPullRequests({
             q: `${commit_hash} type:pr is:merged`
           });
-          console.log(items)
+          console.log(items[0])
