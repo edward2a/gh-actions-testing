@@ -41,7 +41,7 @@ jobs:
     - id: output
       shell: bash
       env:
-        PR_NUMBER: "${{ fromJson(toJson(steps.pr_id.outputs.result)).data.number }}"
+        PR_NUMBER: "${{ fromJson(steps.pr_id.outputs.result).data.number }}"
       run: |
         echo "PR NUMBER: ${PR_NUMBER}"
         cat << EOF
