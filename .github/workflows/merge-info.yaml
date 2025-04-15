@@ -35,13 +35,13 @@ jobs:
             console.error(`ERROR: PR search returned ${items.length} results, expected 1.`);
             process.exit(1);
           } else {
-            return toJson(items[0]);
+            return items[0];
           }
 
     - id: output
       shell: bash
       env:
-        PR_NUMBER: "${{ steps.pr_id.outputs.results.number }}"
+        PR_NUMBER: "${{ steps.pr_id.outputs.result.number }}"
       run: |
         echo "PR NUMBER: ${PR_NUMBER}"
 
