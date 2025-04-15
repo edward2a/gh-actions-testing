@@ -45,6 +45,6 @@ jobs:
       run: |
         echo "PR NUMBER: ${PR_NUMBER}"
         cat << EOF
-        ${{ toJson(steps.pr_id.outputs.result) }}
+        ${{ steps.pr_id.outputs.result }}
         EOF
 
