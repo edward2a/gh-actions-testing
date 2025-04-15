@@ -45,6 +45,6 @@ jobs:
       run: |
         echo "PR NUMBER: ${PR_NUMBER}"
         cat << EOF
-        ${{ steps.pr_id.outputs.result.data }}
+        ${{ steps.pr_id.outputs.result }}
         EOF
 
