@@ -35,7 +35,7 @@ jobs:
             console.error(`ERROR: PR search returned ${items.length} results, expected 1.`);
             process.exit(1);
           } else {
-            return items[0];
+            return toJson(items[0]);
           }
 
     - id: output
