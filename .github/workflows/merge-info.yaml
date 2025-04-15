@@ -35,16 +35,16 @@ jobs:
             console.error(`ERROR: PR search returned ${items.length} results, expected 1.`);
             process.exit(1);
           } else {
-            return items[0];
+            core.setOutput('data', items[0]);
           }
 
     - id: output
       shell: bash
       env:
-        PR_NUMBER: "${{ steps.pr_id.outputs.result.number }}"
+        PR_NUMBER: "${{ steps.pr_id.outputs.result.data.number }}"
       run: |
         echo "PR NUMBER: ${PR_NUMBER}"
         cat << EOF
-        ${{ steps.pr_id.outputs.result['number'] }}
+        ${{ steps.pr_id.outputs.result.data.['number'] }}
         EOF
 
