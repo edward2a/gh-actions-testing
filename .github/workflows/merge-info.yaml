@@ -20,7 +20,6 @@ jobs:
     - id: pr_id
       uses: actions/github-script@v6
       with:
-        debug: true
         script: |
           const commit_hash = "${{ steps.commit_id.outputs.commit_hash }}"
           const { data: { items } } = await github.rest.search.issuesAndPullRequests({
