@@ -13,16 +13,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
     - id: commit_id
       shell: bash
       run: |
         echo "commit_hash=$(git rev-parse HEAD)" | tee $GITHUB_OUTPUT
+
     - id: pr_id
       uses: actions/github-script@v6
       with:
         script: |
           const commit_hash = "${{ steps.commit_id.outputs.commit_hash }}"
+
+          // Search PR
           const { data: { items } } = await github.rest.search.issuesAndPullRequests({
             q: `${commit_hash} type:pr is:merged`
           });
-          console.log(items[0])
+
+          // Check and output
+          if (items.length != 1) {
+            console.error(`ERROR: PR search returned ${items.length} results, expected 1.`);
+            process.exit(1);
+          } else {
+            return items[0];
+          }
+
+    - id: output
+      shell: bash
+      env:
+        PR_NUMBER: "${{ steps.pr_id.outputs.results.number }}"
+      run: |
+        echo "PR NUMBER: ${PR_NUMBER}"
+
