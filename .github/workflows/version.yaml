@@ -22,6 +22,7 @@ jobs:
         script: |
           const { execSync } = require('child_process');
 
+          let title = process.env.PR_TITLE ? process.env.PR_TITLE : context.payload.pull_request.title
           // Get latest tag
           let v_string = execSync(
             'git tag --list | grep -E "[0-9]+\.[0-9]+\.[0-9]+" | sort --sort=version | tail -n 1',
@@ -32,7 +33,7 @@ jobs:
           if (v_string == '') {
 
             // If no version tag and init set (done here to prevent re-init) set first tag
-            if (context.payload.pull_request.title.match(/\[INIT\]/)) {
+            if (title.match(/\[INIT\]/)) {
               console.log('INFO: No version tag found and init set, initializing version as "0.0.1"');
               return '0.0.1';
             }
@@ -54,7 +55,7 @@ jobs:
           })();
 
           // Increase relevant version based on PR title tag
-          switch ( (context.payload.pull_request.title.match(/\[(MAJOR|MINOR|PATCH)\]/) || ['',''])[1] ) {
+          switch ( (title.match(/\[(MAJOR|MINOR|PATCH)\]/) || ['',''])[1] ) {
 
             case 'MAJOR':
               v_object.major += 1;
