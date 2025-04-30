@@ -21,7 +21,7 @@ jobs:
         result-encoding: string
         script: |
           const { execSync } = require('child_process');
-
+          console.log(title);
           let title = process.env.PR_TITLE ? process.env.PR_TITLE : context.payload.pull_request.title;
 
           // Get latest tag
