@@ -38,15 +38,83 @@ jobs:
             return items[0];
           }
 
+    - id: make_version
+      uses: actions/github-script@v6
+      env:
+        PR_TITLE: "${{ fromJson(steps.pr_id.outputs.result).title }}"
+      with:
+        result-encoding: string
+        script: |
+          const { execSync } = require('child_process');
+
+          let title = process.env.PR_TITLE ? process.env.PR_TITLE ? context.payload.pull_request.title
+          // Get latest tag
+          let v_string = execSync(
+            'git tag --list | grep -E "[0-9]+\.[0-9]+\.[0-9]+" | sort --sort=version | tail -n 1',
+            { encoding: 'utf-8' }
+          );
+
+          // Check result and log
+          if (v_string == '') {
+
+            // If no version tag and init set (done here to prevent re-init) set first tag
+            if (title.match(/\[INIT\]/)) {
+              console.log('INFO: No version tag found and init set, initializing version as "0.0.1"');
+              return '0.0.1';
+            }
+
+            console.error(`ERROR: Tag string not found while listing repository tags - ${v_string}`);
+            process.exit(1);
+
+          } else {
+            console.log(`INFO: Found tag with version ${v_string}`);
+          }
+
+          // Parse tag into object
+          let v_object = ((v = v_string.split('.')) => {
+            return {
+              major: Number(v[0]),
+              minor: Number(v[1]),
+              patch: Number(v[2])
+            };
+          })();
+
+          // Increase relevant version based on PR title tag
+          switch ( (title.match(/\[(MAJOR|MINOR|PATCH)\]/) || ['',''])[1] ) {
+
+            case 'MAJOR':
+              v_object.major += 1;
+              break;
+
+            case 'MINOR':
+              v_object.minor += 1;
+              break;
+
+            case 'PATCH':
+              v_object.patch += 1;
+              break;
+
+            default:
+              console.error('ERROR: Missing version change tag in PR title ([MAJOR]|[MINOR]|[PATCH])');
+              process.exit(1);
+          }
+
+          let new_v_string = `${v_object.major}.${v_object.minor}.${v_object.patch}`;
+          console.log(`INFO: Last version: ${v_string}`);
+          console.log(`INFO: Next version: ${new_v_string}`);
+
+          return new_v_string;
+
     - id: tag
       uses: actions/github-script@v6
+      env:
+        BUILD_VERSION: "${{ steps.make_version.outputs.result }}"
       with:
         script: |
-          let version = '0.0.2';
           github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: `refs/tags/${version}`,
+            ref: `refs/tags/${process.env.BUILD_VERSION}`,
             sha: context.sha
           });
 
