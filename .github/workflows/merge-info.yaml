@@ -38,6 +38,18 @@ jobs:
             return items[0];
           }
 
+    - id: tag
+      uses: actions/github-script@v6
+      with:
+        script: |
+          let version = '0.0.2';
+          github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: `refs/tags/{version}`,
+            sha: context.sha
+          });
+
     - id: output
       shell: bash
       env:
