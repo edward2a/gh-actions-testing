@@ -19,11 +19,10 @@ jobs:
     #  run: |
     #    echo "commit_hash=$(git rev-parse HEAD)" | tee $GITHUB_OUTPUT
 
-    - id: pr_id
-      uses: actions/github-script@v6
-      with:
-        script: |
-          console.log(github.event);
+    - id: event_info
+      shell: bash
+      run: |
+        echo "${{ toJSON(github.event) }}"
 
     #- id: tag
     #  uses: actions/github-script@v6
