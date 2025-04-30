@@ -1,0 +1,45 @@
+name: Merge Info
+on:
+
+  push:
+    branches:
+    - master
+
+  workflow_dispatch: {}
+
+jobs:
+
+  get-pr-info:
+    runs-on: ubuntu-latest
+    steps:
+    #- uses: actions/checkout@v3
+
+    #- id: commit_id
+    #  shell: bash
+    #  run: |
+    #    echo "commit_hash=$(git rev-parse HEAD)" | tee $GITHUB_OUTPUT
+
+    - id: pr_id
+      uses: actions/github-script@v6
+      with:
+        script: |
+          console.log(github.event);
+
+    #- id: tag
+    #  uses: actions/github-script@v6
+    #  with:
+    #    script: |
+    #      github.rest.git.createRef({
+    #        owner: context.repo.owner,
+    #        repo: context.repo.repo,
+    #        ref: `refs/tags/{}`,
+    #        sha: context.sha
+    #      })
+
+    #- id: output
+    #  shell: bash
+    #  env:
+    #    PR_NUMBER: "${{ fromJson(steps.pr_id.outputs.result).number }}"
+    #  run: |
+    #    echo "PR NUMBER: ${PR_NUMBER}"
+
