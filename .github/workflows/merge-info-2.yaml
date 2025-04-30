@@ -22,7 +22,13 @@ jobs:
     - id: event_info
       shell: bash
       run: |
-        echo "${{ toJSON(github.event) }}"
+        echo '${{ toJSON(github.event) }}'
+
+    - id: payload_info
+      uses: actions/github-script@v6
+      with:
+        script:
+          console.log(JSON.stringify(context.payload));
 
     #- id: tag
     #  uses: actions/github-script@v6
