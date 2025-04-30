@@ -12,9 +12,11 @@ jobs:
   make-version:
     runs-on: ubuntu-latest
     steps:
+
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
+
     - id: make_version
       uses: actions/github-script@v6
       with:
@@ -22,7 +24,7 @@ jobs:
         script: |
           const { execSync } = require('child_process');
           console.log(title);
-          let title = process.env.PR_TITLE ? process.env.PR_TITLE : context.payload.pull_request.title;
+          //let title = process.env.PR_TITLE ? process.env.PR_TITLE : context.payload.pull_request.title;
 
           // Get latest tag
           let v_string = execSync(
