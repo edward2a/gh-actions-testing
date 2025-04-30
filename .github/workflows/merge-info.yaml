@@ -47,7 +47,7 @@ jobs:
         script: |
           const { execSync } = require('child_process');
 
-          let title = process.env.PR_TITLE ? process.env.PR_TITLE ? context.payload.pull_request.title;
+          let title = process.env.PR_TITLE ? process.env.PR_TITLE : context.payload.pull_request.title;
 
           // Get latest tag
           let v_string = execSync(
