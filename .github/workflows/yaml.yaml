@@ -23,7 +23,7 @@ jobs:
       with:
         script: |
           const yaml = require('js-yaml');
-          const fs = require('fs);
+          const fs = require('fs');
 
           try {
             const doc = yaml.load(fs.readFileSync('test-file.yaml', 'utf8'));
