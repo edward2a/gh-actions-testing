@@ -16,19 +16,32 @@ jobs:
         this:
           is:
             more: yaml
-        " | tee test.yaml
+        " | tee test-file.yaml
 
     - name: Read some yaml
       uses: actions/github-script@v6
       with:
         script: |
-          const yaml = require('js-yaml');
           const fs = require('fs');
 
           try {
+            console.log('Trying to load js-yaml...')
+            const jsyaml = require('js-yaml');
             const doc = yaml.load(fs.readFileSync('test-file.yaml', 'utf8'));
             console.log(doc);
+            return
           } catch (e) {
-            console.log(e);
+            console.log(e.code);
           }
+
+          try {
+            console.log('Trying to load YAML...')
+            const YAML = require('yaml');
+            const doc = YAML.parse(fs.readFileSync('test-file.yaml', 'utf8'));
+            console.log(doc);
+            return
+          } catch (e) {
+            console.log(e.code);
+          }
+
 
