@@ -1,0 +1,31 @@
+name: YAML
+on:
+
+  workflow_dispatch: {}
+
+jobs:
+
+    - name: Write some yaml
+      run: |
+        echo "---
+        some: yaml
+        more: yaml
+        this:
+          is:
+            more: yaml
+        " | tee test.yaml
+
+    - name: Read some yaml
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const yaml = require('js-yaml');
+          const fs = require('fs);
+
+          try {
+            const doc = yaml.load(fs.readFileSync('test-file.yaml', 'utf8'));
+            console.log(doc);
+          } catch (e) {
+            console.log(e);
+          }
+
