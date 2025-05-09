@@ -5,6 +5,7 @@ on:
 
 jobs:
   yaml:
+    runs-on: ubuntu-latest
     steps:
 
     - name: Write some yaml
