@@ -4,6 +4,8 @@ on:
   workflow_dispatch: {}
 
 jobs:
+  yaml:
+    steps:
 
     - name: Write some yaml
       run: |
